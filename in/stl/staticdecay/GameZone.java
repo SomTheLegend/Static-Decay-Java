@@ -34,7 +34,7 @@ public class GameZone {
         this.layout = layout;
         this.creatures = creatures;
         this.interactables = interactables;
-        this.visited = new boolean[width][height];
+        this.visited = new boolean[height][width];
     }
 
     /**
@@ -105,7 +105,7 @@ public class GameZone {
      */
     public boolean isVisited(int x, int y) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
-            return visited[x][y];
+            return visited[y][x];
         }
         return false;
     }

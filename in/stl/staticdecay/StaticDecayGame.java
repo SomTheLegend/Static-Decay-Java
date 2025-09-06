@@ -4,9 +4,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * The main class for the Static Decay game. Handles game logic, player input, and rendering the game state.
+ * The main class for the Static Decay game. This class handles game logic, player input, and rendering the game state.
  */
 public class StaticDecayGame {
+
+    private static final int MAX_PLAYER_HP = 100;
 
     private final Player player = new Player(1, 1);
     private GameZone currentZone;
@@ -223,7 +225,9 @@ public class StaticDecayGame {
         if (player.getSanity() < 30) {
             System.out.println(scrambleText(mapStr));
         } else {
-            System.out.println(mapStr);
+            for (char c : mapStr.toCharArray()) {
+                System.out.print(c);
+            }
         }
         System.out.println("-".repeat(60));
         System.out.println("LOG:");
@@ -239,6 +243,8 @@ public class StaticDecayGame {
      */
     private String buildMapString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("Zone: ").append(currentZone.getName()).append(" (")
+          .append(currentZone.getWidth()).append("x").append(currentZone.getHeight()).append(")\n");
         for (int y = 0; y < currentZone.getHeight(); y++) {
             for (int x = 0; x < currentZone.getWidth(); x++) {
                 int finalX = x;
@@ -255,7 +261,7 @@ public class StaticDecayGame {
                     sb.append(' ');
                 }
             }
-            sb.append(' ');
+            sb.append('\n');
         }
         return sb.toString();
     }
@@ -449,7 +455,7 @@ public class StaticDecayGame {
             return;
         }
         System.out.println("--- INVENTORY ---");
-        player.getInventory().forEach((item, count) -> System.out.printf("%s x%d - %s",
+        player.getInventory().forEach((item, count) -> System.out.printf("%s x%d - %s%n",
                 item.getName(), count, item.getDescription()));
         System.out.println("-".repeat(60));
         System.out.println("Enter item name to use/equip, or [B] to go back: ");
@@ -484,7 +490,7 @@ public class StaticDecayGame {
                     .stream()
                     .map(e -> e.getKey() + " x" + e.getValue())
                     .collect(Collectors.joining(", "));
-            System.out.printf("[%d] %s <- %s", i, recipe.getResult().getName(), ingredientStr);
+            System.out.printf("[%d] %s <- %s%n", i, recipe.getResult().getName(), ingredientStr);
         }
         System.out.println("-".repeat(60));
         System.out.print("Enter recipe number to craft, or [B] to go back: ");
